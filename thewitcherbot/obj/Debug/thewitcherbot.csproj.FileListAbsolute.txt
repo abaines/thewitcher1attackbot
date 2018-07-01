@@ -1,0 +1,6 @@
+c:\users\alan\documents\visual studio 2015\Projects\thewitcherbot\thewitcherbot\bin\Debug\thewitcherbot.exe.config
+c:\users\alan\documents\visual studio 2015\Projects\thewitcherbot\thewitcherbot\obj\Debug\thewitcherbot.csprojResolveAssemblyReference.cache
+c:\users\alan\documents\visual studio 2015\Projects\thewitcherbot\thewitcherbot\bin\Debug\thewitcherbot.exe
+c:\users\alan\documents\visual studio 2015\Projects\thewitcherbot\thewitcherbot\bin\Debug\thewitcherbot.pdb
+c:\users\alan\documents\visual studio 2015\Projects\thewitcherbot\thewitcherbot\obj\Debug\thewitcherbot.exe
+c:\users\alan\documents\visual studio 2015\Projects\thewitcherbot\thewitcherbot\obj\Debug\thewitcherbot.pdb
