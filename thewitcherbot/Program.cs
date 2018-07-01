@@ -19,6 +19,17 @@ namespace thewitcherbot
       static HashSet<string> hashes = new HashSet<string>();
       static string cwd = Directory.GetCurrentDirectory();
 
+      static HashSet<string> comboHashes = new HashSet<string>();
+
+      static Program()
+      {
+         comboHashes.Add("ff9bae344efb00bdc26af07d419e3bd1");
+         comboHashes.Add("5d0bea99cb7cebb511dd7e0af955ea4c");
+
+         comboHashes.Add("ddff2712037266faff4ac5b88d3063f7");
+         comboHashes.Add("e99cb15837be42718f933b363f0784d2");
+      }
+
       static void Main(string[] args)
       {
          Process.Start(cwd);
@@ -29,7 +40,7 @@ namespace thewitcherbot
          {
             derp();
             //Console.WriteLine("");
-            Thread.Sleep(100);
+            Thread.Sleep(50);
          }
       }
 
@@ -47,8 +58,9 @@ namespace thewitcherbot
          //Call the imported function with the cursor's current position
          uint X = (uint)Cursor.Position.X;
          uint Y = (uint)Cursor.Position.Y;
-         Console.Out.WriteLine(X + " " + Y);
          mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, X, Y, 0, 0);
+         string d = DateTime.Now.ToString("HH:mm:ss ff");
+         Console.Out.WriteLine(d + "   x=" + X + " y=" + Y);
       }
 
 
@@ -119,12 +131,11 @@ namespace thewitcherbot
                   bmp.Save(Path.Combine(cwd, hash + ".bmp"));
                }
 
-               if (hash == "ff9bae344efb00bdc26af07d419e3bd1")
+               if (comboHashes.Contains(hash))
                {
                   DoMouseClick();
+                  Thread.Sleep(200);
                }
-
-
 
                //g.ReleaseHdc();
             }
