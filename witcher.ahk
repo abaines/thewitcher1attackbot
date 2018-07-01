@@ -6,6 +6,7 @@
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
+toggleRun := false
 
 ; when home key is pressed, start Send_w timer
 Home::
@@ -24,3 +25,19 @@ Send {w down}
 sleep 100
 return
 
+
+XButton1::
+{
+	;MsgBox, Hello World
+	if (toggleRun)
+	{
+		SetTimer, Send_w, off
+		send {w up}
+		toggleRun := false
+	}
+	else
+	{
+		SetTimer, Send_W, 0
+		toggleRun := true
+	}
+}
