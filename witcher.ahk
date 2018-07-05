@@ -13,11 +13,32 @@ Home::
 SetTimer, Send_W, 0
 return
 
+
+
+
 ; when end key is pressed, end Send_w timer
 End::
 SetTimer, Send_w, off
 send {w up}
+toggleRun := false
 return
+
+; when w key is pressed, end Send_w timer
+~w::
+SetTimer, Send_w, off
+;send {w up}
+toggleRun := false
+return
+
+; when s key is pressed, end Send_w timer
+~s::
+SetTimer, Send_w, off
+send {w up}
+toggleRun := false
+return
+
+
+
 
 ; send the w key for 100 ms
 Send_w:
