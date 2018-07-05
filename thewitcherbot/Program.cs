@@ -26,8 +26,8 @@ namespace thewitcherbot
          comboHashes.Add("ff9bae344efb00bdc26af07d419e3bd1");
          comboHashes.Add("5d0bea99cb7cebb511dd7e0af955ea4c");
 
-         comboHashes.Add("ddff2712037266faff4ac5b88d3063f7");
-         comboHashes.Add("e99cb15837be42718f933b363f0784d2");
+         //comboHashes.Add("ddff2712037266faff4ac5b88d3063f7");
+         //comboHashes.Add("e99cb15837be42718f933b363f0784d2");
       }
 
       static void Main(string[] args)
