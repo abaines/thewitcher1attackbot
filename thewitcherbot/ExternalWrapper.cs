@@ -39,17 +39,25 @@ namespace thewitcherbot
 
       const Int32 CURSOR_SHOWING = 0x00000001;
 
+      static readonly int memsize = Marshal.SizeOf(typeof(CURSORINFO));
+
+      static ExternalWrapper()
+      {
+      }
+
       static public void LeftClickMouse(uint dx, uint dy)
       {
          mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, dx, dy, 0, 0);
       }
+
+
 
       static public Bitmap GetCursorIcon()
       {
          Bitmap bmp = new Bitmap(32, 32);
 
          CURSORINFO pci;
-         pci.cbSize = Marshal.SizeOf(typeof(CURSORINFO));
+         pci.cbSize = memsize;
 
          if (GetCursorInfo(out pci))
          {

@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 using System.IO;
@@ -23,11 +20,8 @@ namespace thewitcherbot
 
       static Program()
       {
-         comboHashes.Add("ff9bae344efb00bdc26af07d419e3bd1");
-         comboHashes.Add("5d0bea99cb7cebb511dd7e0af955ea4c");
-
-         //comboHashes.Add("ddff2712037266faff4ac5b88d3063f7");
-         //comboHashes.Add("e99cb15837be42718f933b363f0784d2");
+         comboHashes.Add("d520ae2a660de45be42d24014fd5f77a");
+         comboHashes.Add("2289fcfc643e7d0b83a03bacdeca9a62");
       }
 
       static void Main(string[] args)
@@ -39,13 +33,9 @@ namespace thewitcherbot
          while (true)
          {
             derp();
-            //Console.WriteLine("");
-            //Thread.Sleep(25);
             Thread.Sleep(10);
          }
       }
-
-
 
 
       static void DoMouseClick()
@@ -60,47 +50,42 @@ namespace thewitcherbot
       }
 
 
-
-
-
-
-
       static void derp()
       {
-
-         Bitmap bmp = ExternalWrapper.GetCursorIcon();
-         //Bitmap bmp = new Bitmap(32, 32);
-
-         //if (false)
-         //   using (Form form = new Form())
-         //   {
-         //      form.StartPosition = FormStartPosition.CenterScreen;
-         //      form.Size = bmp.Size;
-
-         //      PictureBox pb = new PictureBox();
-         //      pb.Dock = DockStyle.Fill;
-         //      pb.Image = bmp;
-
-         //      form.Controls.Add(pb);
-         //      form.ShowDialog();
-         //   }
-
-         string hash = getHash(bmp);
-         //string hash = "";
-
-         if (!hashes.Contains(hash))
+         using (Bitmap bmp = ExternalWrapper.GetCursorIcon())
          {
-            hashes.Add(hash);
-            Console.WriteLine(hash);
-            bmp.Save(Path.Combine(cwd, hash + ".bmp"));
-         }
+            //Bitmap bmp = new Bitmap(32, 32);
 
-         if (comboHashes.Contains(hash))
-         {
-            DoMouseClick();
-            Thread.Sleep(200);
-         }
+            //if (false)
+            //   using (Form form = new Form())
+            //   {
+            //      form.StartPosition = FormStartPosition.CenterScreen;
+            //      form.Size = bmp.Size;
 
+            //      PictureBox pb = new PictureBox();
+            //      pb.Dock = DockStyle.Fill;
+            //      pb.Image = bmp;
+
+            //      form.Controls.Add(pb);
+            //      form.ShowDialog();
+            //   }
+
+            string hash = "";
+            hash = getHash(bmp);
+
+            if (!hashes.Contains(hash))
+            {
+               hashes.Add(hash);
+               Console.WriteLine(hash);
+               bmp.Save(Path.Combine(cwd, hash + ".bmp"));
+            }
+
+            if (comboHashes.Contains(hash))
+            {
+               DoMouseClick();
+               Thread.Sleep(200);
+            }
+         }
       }
 
       static MD5 md5Hash = MD5.Create();
@@ -128,26 +113,9 @@ namespace thewitcherbot
 
       static byte[] getBytes(Bitmap bmp)
       {
-         // Lock the bitmap's bits.  
-         Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
-         BitmapData bmpData = bmp.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
-
-         // Get the address of the first line.
-         IntPtr ptr = bmpData.Scan0;
-
-         // Declare an array to hold the bytes of the bitmap.
-         int bytes = bmpData.Stride * bmp.Height;
-         byte[] rgbValues = new byte[bytes];
-
-
-         // Copy the RGB values into the array.
-         Marshal.Copy(ptr, rgbValues, 0, bytes);
-
-         Marshal.Release(ptr);
-         //Marshal.FreeCoTaskMem(ptr);
-         ptr = IntPtr.Zero;
-
-         return rgbValues;
+         MemoryStream ms = new MemoryStream();
+         bmp.Save(ms, ImageFormat.Bmp);
+         return ms.ToArray();
       }
    }
 }
