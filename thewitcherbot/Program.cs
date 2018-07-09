@@ -40,106 +40,87 @@ namespace thewitcherbot
          {
             derp();
             //Console.WriteLine("");
-            Thread.Sleep(50);
+            //Thread.Sleep(50);
+            Thread.Sleep(0);
          }
       }
 
 
-      [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
-      public static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint cButtons, uint dwExtraInfo);
-      //Mouse actions
-      private const int MOUSEEVENTF_LEFTDOWN = 0x02;
-      private const int MOUSEEVENTF_LEFTUP = 0x04;
-      private const int MOUSEEVENTF_RIGHTDOWN = 0x08;
-      private const int MOUSEEVENTF_RIGHTUP = 0x10;
+
 
       static void DoMouseClick()
       {
          //Call the imported function with the cursor's current position
          uint X = (uint)Cursor.Position.X;
          uint Y = (uint)Cursor.Position.Y;
-         mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, X, Y, 0, 0);
+         //mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, X, Y, 0, 0);
+         ExternalWrapper.LeftClickMouse(X, Y);
          string d = DateTime.Now.ToString("HH:mm:ss ff");
          Console.Out.WriteLine(d + "   x=" + X + " y=" + Y);
       }
 
 
-      [StructLayout(LayoutKind.Sequential)]
-      struct CURSORINFO
-      {
-         public Int32 cbSize;
-         public Int32 flags;
-         public IntPtr hCursor;
-         public POINTAPI ptScreenPos;
-      }
 
-      [StructLayout(LayoutKind.Sequential)]
-      struct POINTAPI
-      {
-         public int x;
-         public int y;
-      }
 
-      [DllImport("user32.dll")]
-      static extern bool GetCursorInfo(out CURSORINFO pci);
 
-      [DllImport("user32.dll")]
-      static extern bool DrawIcon(IntPtr hDC, int X, int Y, IntPtr hIcon);
 
-      const Int32 CURSOR_SHOWING = 0x00000001;
 
       static void derp()
       {
-         CURSORINFO pci;
-         pci.cbSize = Marshal.SizeOf(typeof(CURSORINFO));
+         //CURSORINFO pci;
+         //pci.cbSize = Marshal.SizeOf(typeof(CURSORINFO));
 
+         //if (GetCursorInfo(out pci))
+         //{
+         //   if (pci.flags == CURSOR_SHOWING)
+         //   {
+         //      //Console.WriteLine(pci.hCursor);
 
+         //      Bitmap bmp = new Bitmap(32, 32);
+         //      using (Graphics g = Graphics.FromImage(bmp))
+         //      {
+         //         DrawIcon(g.GetHdc(), 0, 0, pci.hCursor);
+         //         g.ReleaseHdc();
+         //      }
 
-         if (GetCursorInfo(out pci))
+         Bitmap bmp = ExternalWrapper.GetCursorIcon();
+         //Bitmap bmp = new Bitmap(32, 32);
+
+         //if (false)
+         //   using (Form form = new Form())
+         //   {
+         //      form.StartPosition = FormStartPosition.CenterScreen;
+         //      form.Size = bmp.Size;
+
+         //      PictureBox pb = new PictureBox();
+         //      pb.Dock = DockStyle.Fill;
+         //      pb.Image = bmp;
+
+         //      form.Controls.Add(pb);
+         //      form.ShowDialog();
+         //   }
+
+         string hash = getHash(bmp);
+         //string hash = "";
+
+         if (!hashes.Contains(hash))
          {
-            if (pci.flags == CURSOR_SHOWING)
-            {
-               //Console.WriteLine(pci.hCursor);
-
-               Bitmap bmp = new Bitmap(32, 32);
-               using (Graphics g = Graphics.FromImage(bmp))
-               {
-                  DrawIcon(g.GetHdc(), 0, 0, pci.hCursor);
-                  g.ReleaseHdc();
-               }
-
-               if (false)
-                  using (Form form = new Form())
-                  {
-                     form.StartPosition = FormStartPosition.CenterScreen;
-                     form.Size = bmp.Size;
-
-                     PictureBox pb = new PictureBox();
-                     pb.Dock = DockStyle.Fill;
-                     pb.Image = bmp;
-
-                     form.Controls.Add(pb);
-                     form.ShowDialog();
-                  }
-
-               string hash = getHash(bmp);
-
-               if (!hashes.Contains(hash))
-               {
-                  hashes.Add(hash);
-                  Console.WriteLine(hash);
-                  bmp.Save(Path.Combine(cwd, hash + ".bmp"));
-               }
-
-               if (comboHashes.Contains(hash))
-               {
-                  DoMouseClick();
-                  Thread.Sleep(200);
-               }
-
-               //g.ReleaseHdc();
-            }
+            hashes.Add(hash);
+            Console.WriteLine(hash);
+            bmp.Save(Path.Combine(cwd, hash + ".bmp"));
          }
+
+         if (comboHashes.Contains(hash))
+         {
+            DoMouseClick();
+            Thread.Sleep(200);
+         }
+
+         //g.ReleaseHdc();
+         //   }
+         //}
+
+         // TODO: Marshal.?Release?( pci.cbSize )
       }
 
       static string getHash(Bitmap bmp)
@@ -199,38 +180,38 @@ namespace thewitcherbot
          return rgbValues;
       }
 
-      static Bitmap CaptureScreen(bool CaptureMouse)
-      {
-         Bitmap result = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height, PixelFormat.Format24bppRgb);
+      //static Bitmap CaptureScreen(bool CaptureMouse)
+      //{
+      //   Bitmap result = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height, PixelFormat.Format24bppRgb);
 
-         try
-         {
-            using (Graphics g = Graphics.FromImage(result))
-            {
-               g.CopyFromScreen(0, 0, 0, 0, Screen.PrimaryScreen.Bounds.Size, CopyPixelOperation.SourceCopy);
+      //   try
+      //   {
+      //      using (Graphics g = Graphics.FromImage(result))
+      //      {
+      //         g.CopyFromScreen(0, 0, 0, 0, Screen.PrimaryScreen.Bounds.Size, CopyPixelOperation.SourceCopy);
 
-               if (CaptureMouse)
-               {
-                  CURSORINFO pci;
-                  pci.cbSize = System.Runtime.InteropServices.Marshal.SizeOf(typeof(CURSORINFO));
+      //         if (CaptureMouse)
+      //         {
+      //            CURSORINFO pci;
+      //            pci.cbSize = System.Runtime.InteropServices.Marshal.SizeOf(typeof(CURSORINFO));
 
-                  if (GetCursorInfo(out pci))
-                  {
-                     if (pci.flags == CURSOR_SHOWING)
-                     {
-                        DrawIcon(g.GetHdc(), pci.ptScreenPos.x, pci.ptScreenPos.y, pci.hCursor);
-                        g.ReleaseHdc();
-                     }
-                  }
-               }
-            }
-         }
-         catch
-         {
-            result = null;
-         }
+      //            if (GetCursorInfo(out pci))
+      //            {
+      //               if (pci.flags == CURSOR_SHOWING)
+      //               {
+      //                  DrawIcon(g.GetHdc(), pci.ptScreenPos.x, pci.ptScreenPos.y, pci.hCursor);
+      //                  g.ReleaseHdc();
+      //               }
+      //            }
+      //         }
+      //      }
+      //   }
+      //   catch
+      //   {
+      //      result = null;
+      //   }
 
-         return result;
-      }
+      //   return result;
+      //}
    }
 }
