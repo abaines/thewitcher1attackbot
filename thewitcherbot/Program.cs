@@ -40,8 +40,8 @@ namespace thewitcherbot
          {
             derp();
             //Console.WriteLine("");
-            //Thread.Sleep(50);
-            Thread.Sleep(0);
+            //Thread.Sleep(25);
+            Thread.Sleep(10);
          }
       }
 
@@ -67,21 +67,6 @@ namespace thewitcherbot
 
       static void derp()
       {
-         //CURSORINFO pci;
-         //pci.cbSize = Marshal.SizeOf(typeof(CURSORINFO));
-
-         //if (GetCursorInfo(out pci))
-         //{
-         //   if (pci.flags == CURSOR_SHOWING)
-         //   {
-         //      //Console.WriteLine(pci.hCursor);
-
-         //      Bitmap bmp = new Bitmap(32, 32);
-         //      using (Graphics g = Graphics.FromImage(bmp))
-         //      {
-         //         DrawIcon(g.GetHdc(), 0, 0, pci.hCursor);
-         //         g.ReleaseHdc();
-         //      }
 
          Bitmap bmp = ExternalWrapper.GetCursorIcon();
          //Bitmap bmp = new Bitmap(32, 32);
@@ -116,18 +101,13 @@ namespace thewitcherbot
             Thread.Sleep(200);
          }
 
-         //g.ReleaseHdc();
-         //   }
-         //}
-
-         // TODO: Marshal.?Release?( pci.cbSize )
       }
+
+      static MD5 md5Hash = MD5.Create();
 
       static string getHash(Bitmap bmp)
       {
          byte[] bytes = getBytes(bmp);
-
-         MD5 md5Hash = MD5.Create();
 
          byte[] data = md5Hash.ComputeHash(bytes);
 
@@ -158,60 +138,16 @@ namespace thewitcherbot
          // Declare an array to hold the bytes of the bitmap.
          int bytes = bmpData.Stride * bmp.Height;
          byte[] rgbValues = new byte[bytes];
-         //byte[] r = new byte[bytes / 3];
-         //byte[] g = new byte[bytes / 3];
-         //byte[] b = new byte[bytes / 3];
+
 
          // Copy the RGB values into the array.
          Marshal.Copy(ptr, rgbValues, 0, bytes);
 
-         //int count = 0;
-         //int stride = bmpData.Stride;
+         Marshal.Release(ptr);
+         //Marshal.FreeCoTaskMem(ptr);
+         ptr = IntPtr.Zero;
 
-         //for (int column = 0; column < bmpData.Height; column++)
-         //{
-         //   for (int row = 0; row < bmpData.Width; row++)
-         //   {
-         //      b[count] = (byte)(rgbValues[(column * stride) + (row * 3)]);
-         //      g[count] = (byte)(rgbValues[(column * stride) + (row * 3) + 1]);
-         //      r[count++] = (byte)(rgbValues[(column * stride) + (row * 3) + 2]);
-         //   }
-         //}
          return rgbValues;
       }
-
-      //static Bitmap CaptureScreen(bool CaptureMouse)
-      //{
-      //   Bitmap result = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height, PixelFormat.Format24bppRgb);
-
-      //   try
-      //   {
-      //      using (Graphics g = Graphics.FromImage(result))
-      //      {
-      //         g.CopyFromScreen(0, 0, 0, 0, Screen.PrimaryScreen.Bounds.Size, CopyPixelOperation.SourceCopy);
-
-      //         if (CaptureMouse)
-      //         {
-      //            CURSORINFO pci;
-      //            pci.cbSize = System.Runtime.InteropServices.Marshal.SizeOf(typeof(CURSORINFO));
-
-      //            if (GetCursorInfo(out pci))
-      //            {
-      //               if (pci.flags == CURSOR_SHOWING)
-      //               {
-      //                  DrawIcon(g.GetHdc(), pci.ptScreenPos.x, pci.ptScreenPos.y, pci.hCursor);
-      //                  g.ReleaseHdc();
-      //               }
-      //            }
-      //         }
-      //      }
-      //   }
-      //   catch
-      //   {
-      //      result = null;
-      //   }
-
-      //   return result;
-      //}
    }
 }

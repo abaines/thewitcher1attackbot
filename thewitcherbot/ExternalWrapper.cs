@@ -44,13 +44,6 @@ namespace thewitcherbot
          mouse_event(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_LEFTUP, dx, dy, 0, 0);
       }
 
-      //static CURSORINFO pci;
-
-      //static ExternalWrapper()
-      //{
-      //   pci.cbSize = Marshal.SizeOf(typeof(CURSORINFO));
-      //}
-
       static public Bitmap GetCursorIcon()
       {
          Bitmap bmp = new Bitmap(32, 32);
@@ -70,9 +63,7 @@ namespace thewitcherbot
             }
          }
 
-         // TODO: Marshal.?Release?( pci.cbSize )
          return bmp;
       }
-
    }
 }
