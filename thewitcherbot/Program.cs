@@ -26,6 +26,7 @@ namespace thewitcherbot
 
       static void Main(string[] args)
       {
+         Console.Title = "The Witcher Attack Bot";
          Process.Start(cwd);
          Console.WriteLine(cwd);
 
